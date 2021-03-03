@@ -466,6 +466,12 @@ class Alignments:
             total_gene_families_for_bug=len(self.__scores_by_bug_gene[bug])
             messages.append(bug + " : " + str(total_gene_families_for_bug) + " gene families")
              
+        
+        print("BUG COUNTS:")
+        print(self.__bug_counts)
+        print("GENE COUNTS:)
+        print(self.__gene_counts)
+        
         # add all gene scores to structure
         gene_scores_store.add(all_gene_scores,"all")
         
