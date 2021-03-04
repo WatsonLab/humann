@@ -292,6 +292,7 @@ class Alignments:
         Add the hit to the list
         Add the index of the hit to the bugs list and gene list
         """
+        print("Called function add")
         
         # set default read length
         if read_length is None:
@@ -311,6 +312,9 @@ class Alignments:
         # Increase the counts for gene and bug
         self.__bug_counts[bug]=self.__bug_counts.get(bug,0)+1
         self.__gene_counts[reference]=self.__gene_counts.get(reference,0)+1
+        
+        print("Adding 1 to "+bug)
+        print("Adding 1 to "+reference)
             
         # Add to the scores by query and store if query has multiple scores
         if query in self.__total_scores_by_query:
@@ -327,10 +331,18 @@ class Alignments:
         # Store the scores by bug and gene
         normalized_reference_length=normalized_gene_length(reference_length, read_length)
         normalized_score=1/normalized_reference_length
+        
+        print("reference_length is "+reference_length)
+        print("read_length is "+read_length)
+        print("normalized_reference_length is "+normalized_reference_length)
+        print("normalized_score is " +normalized_score)
+        
         if bug in self.__scores_by_bug_gene:
             self.__scores_by_bug_gene[bug][reference]=self.__scores_by_bug_gene[bug].get(reference,0)+normalized_score
         else:
             self.__scores_by_bug_gene[bug]={reference:normalized_score}
+            
+        print("Adding to "+bug+" and "+reference+" the score "+normalized_score)
             
         # write the information for the hit to the temp alignments file
         # or store in memory depending on the memory use setting
@@ -425,15 +437,29 @@ class Alignments:
         This update adds the query normalization
         """
         
+        print("Called function add_query_normalization_to_alignment_score")
+        
         # Normalize by query hits for all queries with multiple hits
         # Hits where it is the only match per query will have scores of 1
         # as this is the result of normalizing (ie score/score)
         
         query_normalize=self.__total_scores_by_query[query]
         
+        print("query is "+query)
+        print("query_normalise is "+query_normalise)
+        
         original_score=1/length
+        
+        print("length is "+length)
+        print("original_score is "+original_score)
+        
         updated_score=score/query_normalize*original_score
+        
+        print("updated_score is "+updated_score)
+        
+        print("Subtracting "+original_score+" and adding "+updated_score+" to "+bug+" and "+reference)
         self.__scores_by_bug_gene[bug][reference]=self.__scores_by_bug_gene[bug][reference]-original_score+updated_score
+        
         
     
     def convert_alignments_to_gene_scores(self,gene_scores_store):
@@ -441,6 +467,8 @@ class Alignments:
         Computes the scores for all genes per bug
         Add to the gene_scores store
         """
+        
+        print("Called function convert_alignments_to_gene_scores")
         
         # Normalize by query hits for all queries with multiple hits
         
@@ -461,6 +489,8 @@ class Alignments:
             # Add up all genes scores for each bug
             for gene in self.__scores_by_bug_gene[bug]:
                 all_gene_scores[gene]=all_gene_scores.get(gene,0)+self.__scores_by_bug_gene[bug][gene]
+                print("adding to all_gene_scores for "+gene+" for bug "+bug+" the value "+self.__scores_by_bug_gene[bug][gene])
+                
             # Add to the gene scores structure
             gene_scores_store.add(self.__scores_by_bug_gene[bug],bug)
             total_gene_families_for_bug=len(self.__scores_by_bug_gene[bug])
@@ -474,6 +504,9 @@ class Alignments:
         
         # add all gene scores to structure
         gene_scores_store.add(all_gene_scores,"all")
+              
+        print("ALL GENE SCORES:")
+        print("all_gene_scores")
         
         # print messages if in verbose mode
         message="\n".join(messages)
