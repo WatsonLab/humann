@@ -313,8 +313,8 @@ class Alignments:
         self.__bug_counts[bug]=self.__bug_counts.get(bug,0)+1
         self.__gene_counts[reference]=self.__gene_counts.get(reference,0)+1
         
-        print("Adding 1 to "+bug)
-        print("Adding 1 to "+reference)
+        print("Adding 1 to "+str(bug))
+        print("Adding 1 to "+str(reference))
             
         # Add to the scores by query and store if query has multiple scores
         if query in self.__total_scores_by_query:
@@ -332,17 +332,17 @@ class Alignments:
         normalized_reference_length=normalized_gene_length(reference_length, read_length)
         normalized_score=1/normalized_reference_length
         
-        print("reference_length is "+reference_length)
-        print("read_length is "+read_length)
-        print("normalized_reference_length is "+normalized_reference_length)
-        print("normalized_score is " +normalized_score)
+        print("reference_length is "+str(reference_length))
+        print("read_length is "+str(read_length))
+        print("normalized_reference_length is "+str(normalized_reference_length))
+        print("normalized_score is "+str(normalized_score))
         
         if bug in self.__scores_by_bug_gene:
             self.__scores_by_bug_gene[bug][reference]=self.__scores_by_bug_gene[bug].get(reference,0)+normalized_score
         else:
             self.__scores_by_bug_gene[bug]={reference:normalized_score}
             
-        print("Adding to "+bug+" and "+reference+" the score "+normalized_score)
+        print("Adding to "+str(bug)+" and "+str(reference)+" the score "+str(normalized_score))
             
         # write the information for the hit to the temp alignments file
         # or store in memory depending on the memory use setting
@@ -445,19 +445,19 @@ class Alignments:
         
         query_normalize=self.__total_scores_by_query[query]
         
-        print("query is "+query)
-        print("query_normalise is "+query_normalise)
+        print("query is "+str(query))
+        print("query_normalise is "+str(query_normalise))
         
         original_score=1/length
         
-        print("length is "+length)
-        print("original_score is "+original_score)
+        print("length is "+str(length))
+        print("original_score is "+str(original_score))
         
         updated_score=score/query_normalize*original_score
         
-        print("updated_score is "+updated_score)
+        print("updated_score is "+str(updated_score))
         
-        print("Subtracting "+original_score+" and adding "+updated_score+" to "+bug+" and "+reference)
+        print("Subtracting "+str(original_score)+" and adding "+str(updated_score)+" to "+str(bug)+" and "+str(reference))
         self.__scores_by_bug_gene[bug][reference]=self.__scores_by_bug_gene[bug][reference]-original_score+updated_score
         
         
@@ -489,7 +489,7 @@ class Alignments:
             # Add up all genes scores for each bug
             for gene in self.__scores_by_bug_gene[bug]:
                 all_gene_scores[gene]=all_gene_scores.get(gene,0)+self.__scores_by_bug_gene[bug][gene]
-                print("adding to all_gene_scores for "+gene+" for bug "+bug+" the value "+self.__scores_by_bug_gene[bug][gene])
+                print("adding to all_gene_scores for "+str(gene)+" for bug "+str(bug)+" the value "+str(self.__scores_by_bug_gene[bug][gene]))
                 
             # Add to the gene scores structure
             gene_scores_store.add(self.__scores_by_bug_gene[bug],bug)
@@ -499,7 +499,7 @@ class Alignments:
         
         print("BUG COUNTS:")
         print(self.__bug_counts)
-        print("GENE COUNTS:)
+        print("GENE COUNTS:")
         print(self.__gene_counts)
         
         # add all gene scores to structure
