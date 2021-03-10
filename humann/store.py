@@ -446,7 +446,7 @@ class Alignments:
         query_normalize=self.__total_scores_by_query[query]
         
         print("query is "+str(query))
-        print("query_normalise is "+str(query_normalise))
+        print("query_normalize is "+str(query_normalize))
         
         original_score=1/length
         
